@@ -1,0 +1,103 @@
+openapi: "3.0.0"
+info:
+  version: "0.1.0"
+  title: "Matchmaker"
+
+paths:
+  /match/search:
+    post:
+      operationId: "findMatch"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FindMatch"
+      responses:
+        "200":
+          description: "Match found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FoundMatch"
+        "404":
+          description: "Match not found"
+
+  /match/by-id/{matchID}/result:
+    put:
+      summary: ""
+      description: ""
+      operationId: "reportMatchResults"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MatchResult"
+      parameters:
+        - in: "path"
+          name: "matchID"
+          required: true
+          schema:
+            $ref: "#/components/schemas/MatchID"
+      responses:
+        "200":
+          description: "Match results accepted"
+
+components:
+  schemas:
+    FindMatch:
+      type: "object"
+      required:
+        - "game"
+        - "player"
+      properties:
+        game:
+          $ref: "#/components/schemas/GameID"
+        player:
+          $ref: "#/components/schemas/PlayerID"
+        mode:
+          type: string
+          example: "ctf"
+        # Hypothesis: some players might be OK with more than one, but not all, maps for a given mode.
+        maps:
+          type: array
+          items:
+            type: string
+
+    FoundMatch:
+      type: "object"
+      required:
+        - "matchID"
+      properties:
+        matchID:
+          $ref: "#/components/schemas/MatchID"
+
+    GameID:
+      type: "string"
+
+    MatchID:
+      type: "string"
+      format: "JWT"
+
+    MatchResult:
+      type: "object"
+      required:
+        - "scores"
+      properties:
+        scores:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/PlayerMatchScore"
+
+    PlayerID:
+      type: "string"
+
+    PlayerMatchScore:
+      type: "object"
+      required:
+        - "player"
+        - "score"
+      properties:
+        player:
+          $ref: "#/components/schemas/PlayerID"
+        score:
+          type: number
