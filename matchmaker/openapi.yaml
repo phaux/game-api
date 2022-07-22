@@ -1,103 +1,138 @@
-openapi: "3.0.0"
+openapi: "3.1.0"
 info:
   version: "0.1.0"
   title: "Matchmaker"
 
 paths:
-  /match/search:
+  "/games/{gameId}/matches":
     post:
-      operationId: "findMatch"
+      operationId: createMatch
+      summary: "Start looking for a match"
+      description: |
+        The request can take some time before completing
+        and can be retried immediately if match not found.
+      security:
+        - playerAuth: []
+      parameters:
+        - name: gameId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/GameId"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/FindMatch"
+              $ref: "#/components/schemas/CreateMatchRequest"
       responses:
         "200":
-          description: "Match found"
+          description: "Match created"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/FoundMatch"
+                $ref: "#/components/schemas/Match"
         "404":
-          description: "Match not found"
+          description: |
+            No match found.
+            There aren't any compatible players looking for a match currently.
+        "429":
+          description: |
+            Too many requests.
+            The player must wait before requesting another match.
 
-  /match/by-id/{matchID}/result:
+  "/games/{gameId}/matches/{matchId}/outcome":
     put:
-      summary: ""
-      description: ""
-      operationId: "reportMatchResults"
+      summary: "Set match outcome"
+      operationId: "setMatchOutcome"
+      security:
+        - serverAuth: []
+      parameters:
+        - name: gameId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/GameId"
+        - in: "path"
+          name: "matchId"
+          required: true
+          schema:
+            $ref: "#/components/schemas/MatchId"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/MatchResult"
-      parameters:
-        - in: "path"
-          name: "matchID"
-          required: true
-          schema:
-            $ref: "#/components/schemas/MatchID"
+              $ref: "#/components/schemas/MatchOutcome"
       responses:
         "200":
           description: "Match results accepted"
+        "409":
+          description: "Match results already accepted"
 
 components:
+  securitySchemes:
+    playerAuth:
+      type: http
+      scheme: bearer
+      description: "Authenticates the player"
+    serverAuth:
+      type: http
+      scheme: bearer
+      description: "Authenticates the game server"
+
   schemas:
-    FindMatch:
-      type: "object"
+    GameId:
+      type: string
+
+    PlayerId:
+      type: string
+
+    MatchId:
+      type: string
+      format: JWT
+
+    Match:
+      type: object
       required:
-        - "game"
-        - "player"
+        - matchId
       properties:
-        game:
-          $ref: "#/components/schemas/GameID"
-        player:
-          $ref: "#/components/schemas/PlayerID"
-        mode:
-          type: string
-          example: "ctf"
-        # Hypothesis: some players might be OK with more than one, but not all, maps for a given mode.
-        maps:
+        matchId:
+          $ref: "#/components/schemas/MatchId"
+
+    CreateMatchRequest:
+      type: object
+      required:
+        - modes
+      properties:
+        modes:
           type: array
           items:
             type: string
+          description: |
+            Game modes and/or maps the player wants to play.
+            Interpretation of these strings depends on the game implementation.
+      example:
+        modes:
+          - "de_dust2"
+          - "de_inferno"
+          - "cs_office"
 
-    FoundMatch:
-      type: "object"
+    MatchOutcome:
+      type: object
       required:
-        - "matchID"
+        - matchId
+        - scores
       properties:
-        matchID:
-          $ref: "#/components/schemas/MatchID"
-
-    GameID:
-      type: "string"
-
-    MatchID:
-      type: "string"
-      format: "JWT"
-
-    MatchResult:
-      type: "object"
-      required:
-        - "scores"
-      properties:
+        matchId:
+          $ref: "#/components/schemas/MatchId"
         scores:
-          type: "array"
+          type: array
           items:
-            $ref: "#/components/schemas/PlayerMatchScore"
-
-    PlayerID:
-      type: "string"
-
-    PlayerMatchScore:
-      type: "object"
-      required:
-        - "player"
-        - "score"
-      properties:
-        player:
-          $ref: "#/components/schemas/PlayerID"
-        score:
-          type: number
+            type: object
+            required:
+              - playerId
+              - score
+            properties:
+              playerId:
+                $ref: "#/components/schemas/PlayerId"
+              score:
+                type: number
