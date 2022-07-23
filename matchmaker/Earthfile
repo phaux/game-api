@@ -1,0 +1,20 @@
+VERSION 0.6
+FROM golang:1.18
+WORKDIR /work
+
+build:
+    COPY go.mod go.sum /work/src
+    RUN (cd ./src && go mod download)
+    COPY . /work/src
+    COPY . /work/original-src
+
+    RUN (cd ./src && go mod tidy)
+    RUN git diff --no-index ./src ./original-src
+
+    RUN (cd ./src && go fmt ./...)
+    RUN git diff --no-index ./src ./original-src
+
+    RUN (cd ./src && CI_GOBIN_PREFIX=/../bin go generate -x ./...)
+    RUN git diff --no-index ./src ./original-src
+
+    RUN (cd ./src go test -shuffle=on ./...)
