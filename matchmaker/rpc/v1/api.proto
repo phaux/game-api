@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package rpc.v1;
+
+option go_package = "github.com/phaux/game-api/matchmaker/gen/rpc/v1";
+
+service MatchmakerService {
+    rpc FindMatch(FindMatchRequest) returns (FindMatchResponse);
+    rpc ReportMatchResult(ReportMatchResultRequest) returns (ReportMatchResultResponse);
+}
+
+message FindMatchRequest {
+    GameMode game_mode = 1;
+    string map_id = 2;
+}
+
+enum GameMode {
+    GAME_MODE_UNSPECIFIED = 0;
+    GAME_MODE_FREE_FOR_ALL = 1;
+    GAME_MODE_TWO_VS_TWO = 2;
+}
+
+message FindMatchResponse {
+    string match_id = 1;
+}
+
+message ReportMatchResultRequest {
+    string match_id = 1;
+    repeated PlayerScore scores = 2;
+}
+
+message ReportMatchResultResponse {};
+
+message PlayerScore {
+    string player_id = 1;
+    int64 score = 2;
+}
