@@ -2,7 +2,7 @@ VERSION 0.6
 FROM golang:1.18
 WORKDIR /work
 
-build:
+binary:
     COPY go.mod go.sum ./src
     RUN (cd ./src && go mod download)
     COPY . ./src
@@ -18,3 +18,6 @@ build:
     RUN git diff --no-index ./src ./original-src
 
     RUN (cd ./src go test -shuffle=on ./...)
+
+    RUN (cd ./src && CGO_ENABLED=0 go build -o ${PWD}/../.bin/matchmaker ./cmd/matchmaker )
+    SAVE ARTIFACT ${PWD}/.bin/matchmaker
