@@ -3,10 +3,10 @@ FROM golang:1.18
 WORKDIR /work
 
 build:
-    COPY go.mod go.sum /work/src
+    COPY go.mod go.sum ./src
     RUN (cd ./src && go mod download)
-    COPY . /work/src
-    COPY . /work/original-src
+    COPY . ./src
+    COPY . ./original-src
 
     RUN (cd ./src && go mod tidy)
     RUN git diff --no-index ./src ./original-src
@@ -14,7 +14,7 @@ build:
     RUN (cd ./src && go fmt ./...)
     RUN git diff --no-index ./src ./original-src
 
-    RUN (cd ./src && CI_GOBIN_PREFIX=/../bin go generate -x ./...)
+    RUN (cd ./src && CI_GOBIN_PREFIX=/.. go generate -x ./...)
     RUN git diff --no-index ./src ./original-src
 
     RUN (cd ./src go test -shuffle=on ./...)
