@@ -30,6 +30,9 @@ container-image:
 
     COPY +binary/matchmaker /matchmaker
 
+    # TODO: Add timezone data from alpine
+    # TODO: Add CA public root certificates from alpine
+
     ENTRYPOINT ["/matchmaker"]
 
     SAVE IMAGE matchmaker:latest
