@@ -1,8 +1,9 @@
 VERSION 0.6
-FROM golang:1.18
-WORKDIR /work
 
 binary:
+    FROM golang:1.18
+    WORKDIR /work
+
     COPY go.mod go.sum ./src
     RUN (cd ./src && go mod download)
     COPY . ./src
