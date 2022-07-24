@@ -20,4 +20,15 @@ binary:
     RUN (cd ./src go test -shuffle=on ./...)
 
     RUN (cd ./src && CGO_ENABLED=0 go build -o ${PWD}/../.bin/matchmaker ./cmd/matchmaker )
-    SAVE ARTIFACT ${PWD}/.bin/matchmaker
+    SAVE ARTIFACT ./.bin/matchmaker
+
+container-image:
+    FROM scratch
+
+    BUILD +binary
+
+    COPY +binary/matchmaker /matchmaker
+
+    ENTRYPOINT ["/matchmaker"]
+
+    SAVE IMAGE matchmaker:latest
