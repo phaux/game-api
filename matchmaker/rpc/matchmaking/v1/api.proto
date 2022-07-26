@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package rpc.v1;
+package rpc.matchmaking.v1;
 
-option go_package = "github.com/phaux/game-api/matchmaker/gen/rpc/v1";
+option go_package = "github.com/phaux/game-api/matchmaker/gen/rpc/matchmaking/v1";
 
 service MatchmakerService {
     rpc FindMatch(FindMatchRequest) returns (FindMatchResponse);

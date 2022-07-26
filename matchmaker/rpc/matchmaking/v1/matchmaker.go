@@ -5,8 +5,8 @@ import (
 
 	"github.com/bufbuild/connect-go"
 
-	v1 "github.com/phaux/game-api/matchmaker/gen/rpc/v1"
-	"github.com/phaux/game-api/matchmaker/gen/rpc/v1/v1connect"
+	v1 "github.com/phaux/game-api/matchmaker/gen/rpc/matchmaking/v1"
+	"github.com/phaux/game-api/matchmaker/gen/rpc/matchmaking/v1/v1connect"
 )
 
 type MatchmakerService struct{}

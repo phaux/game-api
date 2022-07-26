@@ -5,6 +5,7 @@ go 1.18
 require (
 	github.com/bufbuild/buf v1.6.0
 	github.com/bufbuild/connect-go v0.1.1
+	github.com/rs/zerolog v1.27.0
 	google.golang.org/protobuf v1.28.0
 )
 
@@ -22,8 +23,9 @@ require (
 	github.com/klauspost/compress v1.15.6 // indirect
 	github.com/klauspost/pgzip v1.2.5 // indirect
 	github.com/kr/pretty v0.3.0 // indirect
+	github.com/mattn/go-colorable v0.1.12 // indirect
+	github.com/mattn/go-isatty v0.0.14 // indirect
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8 // indirect
-	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pkg/profile v1.6.0 // indirect
 	github.com/rogpeppe/go-internal v1.8.0 // indirect
 	github.com/rs/cors v1.8.2 // indirect

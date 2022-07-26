@@ -9,4 +9,4 @@ package generate
 //go:generate env GOBIN=${PWD}${CI_GOBIN_PREFIX}/.bin go install github.com/bufbuild/connect-go/cmd/protoc-gen-connect-go
 
 //go:generate env PATH=${PWD}${CI_GOBIN_PREFIX}/.bin:$PATH buf lint
-//go:generate env PATH=${PWD}${CI_GOBIN_PREFIX}/.bin:$PATH buf generate rpc/v1/api.proto -v
+//go:generate env PATH=${PWD}${CI_GOBIN_PREFIX}/.bin:$PATH buf generate rpc/matchmaking/v1/api.proto -v

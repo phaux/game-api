@@ -1,7 +1,7 @@
 VERSION 0.6
 
 binary:
-    FROM golang:1.18
+    FROM golang:1.18.4
     WORKDIR /work
 
     COPY go.mod go.sum ./src
@@ -18,10 +18,21 @@ binary:
     RUN (cd ./src && CI_GOBIN_PREFIX=/.. go generate -x ./...)
     RUN git diff --no-index ./src ./original-src
 
-    RUN (cd ./src go test -shuffle=on ./...)
+    RUN (cd ./src && go build ./...)
+    RUN (cd ./src && go test -shuffle=on ./...)
 
     RUN (cd ./src && CGO_ENABLED=0 go build -o ${PWD}/../.bin/matchmaker ./cmd/matchmaker )
+
     SAVE ARTIFACT ./.bin/matchmaker
+
+alpine:
+    FROM alpine:edge
+    WORKDIR /work
+
+    RUN apk update
+    RUN apk add tzdata
+
+    SAVE ARTIFACT /usr/share/zoneinfo /zoneinfo
 
 container-image:
     FROM scratch
@@ -30,8 +41,12 @@ container-image:
 
     COPY +binary/matchmaker /matchmaker
 
-    # TODO: Add timezone data from alpine
-    # TODO: Add CA public root certificates from alpine
+    COPY +alpine/zoneinfo /zoneinfo
+    COPY +alpine/ca-certs /ca-certs
+
+    ENV ZONEINFO /zoneinfo
+
+    ENV PORT 4447
 
     ENTRYPOINT ["/matchmaker"]
 
