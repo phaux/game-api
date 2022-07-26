@@ -40,9 +40,7 @@ container-image:
     BUILD +binary
 
     COPY +binary/matchmaker /matchmaker
-
     COPY +alpine/zoneinfo /zoneinfo
-    COPY +alpine/ca-certs /ca-certs
 
     ENV ZONEINFO /zoneinfo
 
