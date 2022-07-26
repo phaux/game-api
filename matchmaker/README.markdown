@@ -1,6 +1,6 @@
 # Matchmaker
 
-The matchmaker service allows for the to be
+The matchmaker service selects groups of players suitable for playing multiplayer matches together.
 
 ## Invoking the API
 

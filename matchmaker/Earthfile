@@ -48,4 +48,4 @@ container-image:
 
     ENTRYPOINT ["/matchmaker"]
 
-    SAVE IMAGE matchmaker:latest
+    SAVE IMAGE matchmaker
