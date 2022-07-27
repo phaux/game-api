@@ -40,7 +40,7 @@ The following environment variables are supported.
 ---|---|---
 `LOG_LEVEL` | A zerolog-compatible log level value. | `info` (default)
 `PORT` | The port for the HTTP server to listen at. | `4447` (default)
-`ZONEINFO` | Preferred [tz database] location. See [`time.LoadLocation`] | `/zoneinfo` (default ``)
+`ZONEINFO` | Preferred [tz database] location. See [`time.LoadLocation`] | `/zoneinfo` (default: empty)
 
 [tz database]: https://en.wikipedia.org/wiki/Tz_database
 [`time.LoadLocation`]: https://pkg.go.dev/time#LoadLocation
