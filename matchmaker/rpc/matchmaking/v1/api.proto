@@ -10,14 +10,7 @@ service MatchmakerService {
 }
 
 message FindMatchRequest {
-    GameMode game_mode = 1;
-    string map_id = 2;
-}
-
-enum GameMode {
-    GAME_MODE_UNSPECIFIED = 0;
-    GAME_MODE_FREE_FOR_ALL = 1;
-    GAME_MODE_TWO_VS_TWO = 2;
+    string map_id = 1;
 }
 
 message FindMatchResponse {
