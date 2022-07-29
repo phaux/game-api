@@ -21,7 +21,7 @@ binary:
     RUN (cd ./src && go build ./...)
     RUN (cd ./src && go test -shuffle=on ./...)
 
-    RUN (cd ./src && CGO_ENABLED=0 go build -o ${PWD}/../.bin/matchmaker ./cmd/matchmaker )
+    RUN (cd ./src && CGO_ENABLED=0 go build -trimpath -o ${PWD}/../.bin/matchmaker ./cmd/matchmaker )
 
     SAVE ARTIFACT ./.bin/matchmaker
 
