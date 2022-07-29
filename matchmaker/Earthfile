@@ -1,0 +1,51 @@
+VERSION 0.6
+
+binary:
+    FROM golang:1.18.4
+    WORKDIR /work
+
+    COPY go.mod go.sum ./src
+    RUN (cd ./src && go mod download)
+    COPY . ./src
+    COPY . ./original-src
+
+    RUN (cd ./src && go mod tidy)
+    RUN git diff --no-index ./src ./original-src
+
+    RUN (cd ./src && go fmt ./...)
+    RUN git diff --no-index ./src ./original-src
+
+    RUN (cd ./src && CI_GOBIN_PREFIX=/.. go generate -x ./...)
+    RUN git diff --no-index ./src ./original-src
+
+    RUN (cd ./src && go build ./...)
+    RUN (cd ./src && go test -shuffle=on ./...)
+
+    RUN (cd ./src && CGO_ENABLED=0 go build -trimpath -o ${PWD}/../.bin/matchmaker ./cmd/matchmaker )
+
+    SAVE ARTIFACT ./.bin/matchmaker
+
+alpine:
+    FROM alpine:edge
+    WORKDIR /work
+
+    RUN apk update
+    RUN apk add tzdata
+
+    SAVE ARTIFACT /usr/share/zoneinfo /zoneinfo
+
+container-image:
+    FROM scratch
+
+    BUILD +binary
+
+    COPY +binary/matchmaker /matchmaker
+    COPY +alpine/zoneinfo /zoneinfo
+
+    ENV ZONEINFO /zoneinfo
+
+    ENV PORT 4447
+
+    ENTRYPOINT ["/matchmaker"]
+
+    SAVE IMAGE matchmaker

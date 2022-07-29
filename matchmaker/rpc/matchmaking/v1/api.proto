@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package rpc.matchmaking.v1;
+
+option go_package = "github.com/phaux/game-api/matchmaker/gen/rpc/matchmaking/v1";
+
+service MatchmakerService {
+    rpc FindMatch(FindMatchRequest) returns (FindMatchResponse);
+    rpc ReportMatchResult(ReportMatchResultRequest) returns (ReportMatchResultResponse);
+}
+
+message FindMatchRequest {
+    string map_id = 1;
+}
+
+message FindMatchResponse {
+    string match_id = 1;
+}
+
+message ReportMatchResultRequest {
+    string match_id = 1;
+    repeated PlayerScore scores = 2;
+}
+
+message ReportMatchResultResponse {};
+
+message PlayerScore {
+    string player_id = 1;
+    int64 score = 2;
+}
