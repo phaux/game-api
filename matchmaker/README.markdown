@@ -4,10 +4,11 @@ The matchmaker service selects groups of players suitable for playing multiplaye
 
 ## Tools
 
-**Tool** | **Version** | **Used for**
-Go SDK | 1.18+ | Development
-Docker | 20.10+ (API version 1.41+) | Development / Build / Running
-Earthly | 0.6.x | Development / Build
+**Tool** | **Used for**
+---|---
+Go SDK (1.18 or newer) | Development
+Docker | Development / Build / Running
+Earthly (0.6.x) | Development / Build
 
 ## Build container image
 
