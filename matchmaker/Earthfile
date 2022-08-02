@@ -1,7 +1,9 @@
 VERSION 0.6
 
 binary:
-    FROM golang:1.19.0
+    # Temporarily using the digest hash associated with the current latest.
+    # The tag 1.19.0 does not exist for linux/amd64 yet.
+    FROM golang@sha256:8e858b54f541ce33a63b565fc23a8a1915287cc4643b5b6a276db6faaea60f01
     WORKDIR /work
 
     COPY go.mod go.sum ./src
