@@ -1,11 +1,3 @@
----
-status: proposed
-date: 2022-09-11
-deciders: @szabba @phaux
-consulted: none
-informed: none
----
-
 # Coordinate match status tracking using signed tokens
 
 ## Context and Problem Statement
