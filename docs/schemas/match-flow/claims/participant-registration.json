@@ -1,0 +1,47 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://github.com/phaux/game-api/blob/decision-0001/docs/schemas/match-flow/claims/participant-registration.json",
+    "title": "Participant registration claims",
+    "description": "Claims in a JWT that lets a participant learn where the match is being held.",
+    "type": "object",
+    "required": [
+        "sub",
+        "iss",
+        "aud",
+        "exp",
+        "match_id",
+        "config",
+        "participants"
+    ],
+    "properties": {
+        "sub": {
+            "description": "ID of the participant using the token.",
+            "$ref": "./participant-id.json"
+        },
+        "iss": {
+            "type": "string",
+            "const": "matchmaker"
+        },
+        "aud": {
+            "type": "string",
+            "const": "serverlist"
+        },
+        "exp": {
+            "type": "number"
+        },
+        "match_id": {
+            "type": "string",
+            "minLength": 1
+        },
+        "config": {
+            "type": "object"
+        },
+        "participants": {
+            "type": "array",
+            "items": {
+                "description": "ID of the participant using the token.",
+                "$ref": "./participant-id.json"
+            }
+        }
+    }
+}
