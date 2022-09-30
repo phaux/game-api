@@ -1,0 +1,8 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://github.com/phaux/game-api/blob/decision-0001/docs/schemas/match-flow/participant-id.json",
+    "title": "Participant ID",
+    "description": "ID unique for every participant.",
+    "type": "string",
+    "minLength": 1
+}

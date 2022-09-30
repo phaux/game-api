@@ -1,0 +1,48 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://github.com/phaux/game-api/blob/decision-0001/docs/schemas/match-flow/claims/match-reporter-token.json",
+    "title": "Match reporter token claims",
+    "description": "Claims in a JWT that lets the game server report a match result.",
+    "type": "object",
+    "required": [
+        "sub",
+        "iss",
+        "aud",
+        "exp",
+        "match_id",
+        "config",
+        "participants"
+    ],
+    "properties": {
+        "sub": {
+            "description": "Game server reporting the match results.",
+            "type": "string",
+            "minLength": 1
+        },
+        "iss": {
+            "type": "string",
+            "const": "serverlist"
+        },
+        "aud": {
+            "type": "string",
+            "const": "matchmaker"
+        },
+        "exp": {
+            "type": "number"
+        },
+        "match_id": {
+            "type": "string",
+            "minLength": 1
+        },
+        "config": {
+            "type": "object"
+        },
+        "participants": {
+            "type": "array",
+            "items": {
+                "description": "ID of the participant using the token.",
+                "$ref": "./participant-id.json"
+            }
+        }
+    }
+}
