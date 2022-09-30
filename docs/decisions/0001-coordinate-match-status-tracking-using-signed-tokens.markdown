@@ -53,8 +53,9 @@ We identified at least the following services to be implemented:
     * another match can be assigned to the server if it does not report starting the allocated match before this,
     * the `serverlist` needs to maintain this information in stable storage.
 
-  Additionally, the allocated server receives a match report token.
+  Additionally, the allocated server receives a match reporter token.
   This is a signed token with:
+  * the reporting game server as the subject,
   * the `serverlist` as the issuer,
   * the `matchmaker` as the audience,
   * a globally unique match ID (`match_id`),
@@ -64,7 +65,7 @@ We identified at least the following services to be implemented:
 
 * Once the match starts, the server confirms that to the `serverlist`.
 
-* After a completed match, a game server uses the match report token to authenticates a request to the matchmaker that reports the results of the match.
+* After a completed match, a game server uses the match reporter token to authenticates a request to the matchmaker that reports the results of the match.
 
 From the POV of a client the happy path flow is:
 
@@ -76,7 +77,7 @@ From the POV of a client the happy path flow is:
 From the POV of the server:
 
 * it registers itself with the `serverlist`,
-* it awaits for a match report token - receiving one confirms to it that it should run a match,
+* it awaits for a match reporter token - receiving one confirms to it that it should run a match,
 * it awaits for a sufficient number of participants to connect,
 * it reports to the `serverlist` that the match has started,
 * once the match is complete it reports the results to the `matchmaker`.
@@ -110,4 +111,12 @@ On the other hand some features might require to use information from the config
 
 ### Token claim JSON schemas
 
-TBD
+This process uses several [JWTs] along the way.
+The [JSON schemas] of their as of the completion of this decision are:
+
+* [Participant registration claims](https://github.com/phaux/game-api/blob/decision-0001/docs/schemas/match-flow/claims/participant-registration.json)
+* [Match allocation claims](https://github.com/phaux/game-api/blob/decision-0001/docs/schemas/match-flow/claims/match-allocation.json)
+* [Match reporter token claims](https://github.com/phaux/game-api/blob/decision-0001/docs/schemas/match-flow/claims/match-reporter-token.json)
+
+[JSON schemas]: https://json-schema.org/
+[JWTs]: https://www.rfc-editor.org/rfc/rfc7523
