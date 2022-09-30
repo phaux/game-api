@@ -1,6 +1,6 @@
 # Decisions
 
-This directory contains decision records for `github.com/phaux/game-api`.
+This directory contains decision records for this project.
 
 For new ADRs, please use [adr-template.markdown](adr-template.markdown) as basis.
 More information on MADR is available at <https://adr.github.io/madr/>.
