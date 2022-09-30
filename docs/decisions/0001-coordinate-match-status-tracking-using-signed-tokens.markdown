@@ -10,7 +10,7 @@ When players are matched to play in a ranked match, they must then play a match 
   We want different people develop different parts of the system.
 
 * Low number of cross-service interactions.
-  Obviously some are necessary, but each additional interface and/or data format we need to specify, implement and integrat requires the effort of at least two people.
+  Obviously some are necessary, but each additional interface and/or data format we need to specify, implement and integrate requires the effort of at least two people.
 
 * Low number of database interactions.
   Whether we pay for capacity or per-operation - they increase costs.
